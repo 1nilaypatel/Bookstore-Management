@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import listingRouter from './routes/listing.route.js'
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -14,6 +15,8 @@ const app = express();
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
+
+app.use("/server/listing", listingRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
