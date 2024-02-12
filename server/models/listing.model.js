@@ -1,10 +1,14 @@
-import mongoose from 'moongose';
+import mongoose from 'mongoose';
 
 const listingSchema = new mongoose.Schema({
   title:{
     type: String,
     required: true,
     unique: true,
+  },
+  description:{
+    type: String,
+    required: true,
   },
   author:{
     type: String,
@@ -25,6 +29,6 @@ const listingSchema = new mongoose.Schema({
 }, 
 {timestamps: true});
 
-const Listing = mongoose.model('User', listingSchema);
+const Listing = mongoose.model('Books', listingSchema);
 
 export default Listing;
