@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable, } from 'firebase/storage';
-import { app } from '../firebase';
+import { app } from '../firebase.js';
 import { useNavigate } from 'react-router-dom';
 
 export default function CreateListing() {
@@ -95,9 +95,7 @@ export default function CreateListing() {
       }
       setLoading(true);
       setError(false);
-      const response = await axios.post("/server/listing/create", {
-        formData,
-      },{
+      const response = await axios.post("/server/listing/create", formData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -109,7 +107,11 @@ export default function CreateListing() {
         navigate(`/book-listing`);
       }
     } catch(error){
-      setError(error.response.data.message);
+      if (error.response) {
+        setError(error.response.data.message);
+      } else {
+        setError("Network error. Please try again.");
+      }
       setLoading(false);
     }
   };
