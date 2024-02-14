@@ -5,3 +5,8 @@
 body{
   background-color: rgba(159, 151, 151, 0.2);
 }
+
+.custom-swiper .swiper-button-next,
+.custom-swiper .swiper-button-prev {
+  color: white;
+}
