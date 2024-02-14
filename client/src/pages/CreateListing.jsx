@@ -104,7 +104,7 @@ export default function CreateListing() {
       if(response.data.success === false){
         setError(response.data.message);
       } else {
-        navigate(`/book-listing`);
+        navigate(`/book-list`);
       }
     } catch(error){
       if (error.response) {
