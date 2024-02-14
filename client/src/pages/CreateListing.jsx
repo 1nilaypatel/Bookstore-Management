@@ -186,7 +186,7 @@ export default function CreateListing() {
                 type="file" 
                 id="images"
                 accept="image/*"
-                className="p-3 rounded-lg w-full"
+                className="p-2 rounded-lg w-full"
                 multiple
               />
               <button

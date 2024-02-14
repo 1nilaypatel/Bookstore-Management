@@ -9,7 +9,7 @@ export default function App() {
       <Router>
         <Appbar/>
         <Routes>
-          <Route path={"/"} element={<Home />} />
+          <Route path={"/"} element={<BookList />} />
           <Route path={"/book-list"} element={<BookList />} />
           <Route path={"/create-listing"} element={<CreateListing />} />
           <Route path={"/update-listing/:id"} element={<UpdateListing />} />
