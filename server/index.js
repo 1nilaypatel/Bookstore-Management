@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import listingRouter from './routes/listing.route.js'
 import dotenv from 'dotenv';
+import path from 'path';
 dotenv.config();
 
 mongoose.connect(process.env.MONGO).then(() => {
@@ -9,6 +10,8 @@ mongoose.connect(process.env.MONGO).then(() => {
 }).catch((err) => {
   console.log(err);
 });
+
+const __dirname = path.resolve();
 
 const app = express();
 
@@ -19,6 +22,12 @@ app.listen(3000, () => {
 });
 
 app.use("/server/listing", listingRouter);
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+})
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
