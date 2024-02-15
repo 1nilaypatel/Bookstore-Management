@@ -104,10 +104,48 @@ export default function UpdateListing() {
       ...formData,
       [e.target.id]: e.target.value,
     });
+
+    if (e.target.id === 'isbn') {
+      const isValidIsbn = validateIsbn(e.target.value);
+      if (!isValidIsbn) {
+        setError('Please enter a valid ISBN-10.');
+      } else {
+        setError(false);
+      }
+    }
+  };
+
+  const validateIsbn = (isbn) => {
+    // Remove any dashes or spaces from the input ISBN
+    const cleanedIsbn = isbn.replace(/[-\s]/g, '');
+    // Check if the cleaned ISBN is exactly 10 characters long
+    if (cleanedIsbn.length !== 10) {
+      return false;
+    }
+    // Validate the ISBN-10 format using a regular expression
+    const isbnPattern = /^\d{9}[\dX]$/;
+    if (!isbnPattern.test(cleanedIsbn)) {
+      return false;
+    }
+    // Calculate the checksum digit
+    let checksum = 0;
+    for (let i = 0; i < 9; i++) {
+      checksum += parseInt(cleanedIsbn.charAt(i)) * (10 - i);
+    }
+    checksum = (11 - (checksum % 11)) % 11;
+    // Compare the checksum digit with the last character of the ISBN
+    const lastChar = cleanedIsbn.charAt(9).toUpperCase();
+    if ((lastChar !== 'X' && lastChar !== checksum.toString()) || (lastChar === 'X' && checksum !== 10)) {
+      return false;
+    }
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
     try {
       setLoading(true);
       setError(false);
@@ -126,6 +164,24 @@ export default function UpdateListing() {
       setError("Error updating listing");
       setLoading(false);
     }
+  };
+
+  const validateForm = () => {
+    if (
+      formData.title === "" ||
+      formData.description === "" ||
+      formData.price === "" ||
+      formData.isbn === "" ||
+      formData.author === ""
+    ) {
+      setError("All fields are required.");
+      return false;
+    }
+    if (!validateIsbn(formData.isbn)) {
+      setError('Please enter a valid ISBN-10.');
+      return false;
+    }
+    return true;
   };
 
   return (
